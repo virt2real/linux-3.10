@@ -25,7 +25,6 @@
 #include <mach/cpufreq.h>
 #include <mach/cputype.h>
 #include <mach/da8xx.h>
-#include <mach/gpio-davinci.h>
 #include <mach/irqs.h>
 #include <mach/pm.h>
 #include <mach/psc.h>

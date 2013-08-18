@@ -27,7 +27,6 @@
 
 #include <mach/common.h>
 #include <mach/cputype.h>
-#include <mach/gpio-davinci.h>
 #include <mach/irqs.h>
 #include <mach/mux.h>
 #include <mach/psc.h>
