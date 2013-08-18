@@ -7,27 +7,28 @@
  * License version 2. This program is licensed "as is" without any
  * warranty of any kind, whether express or implied.
  */
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/err.h>
-#include <linux/platform_device.h>
-#include <linux/mtd/mtd.h>
-#include <linux/mtd/partitions.h>
-#include <linux/mtd/nand.h>
-#include <linux/i2c.h>
-#include <linux/gpio.h>
 #include <linux/clk.h>
-#include <linux/spi/spi.h>
+#include <linux/err.h>
+#include <linux/gpio.h>
+#include <linux/i2c.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/mtd/mtd.h>
+#include <linux/mtd/nand.h>
+#include <linux/mtd/partitions.h>
+#include <linux/platform_data/i2c-davinci.h>
+#include <linux/platform_data/mmc-davinci.h>
+#include <linux/platform_data/mtd-davinci.h>
+#include <linux/platform_data/usb-davinci.h>
+#include <linux/platform_device.h>
 #include <linux/spi/eeprom.h>
+#include <linux/spi/spi.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
 
-#include <linux/platform_data/i2c-davinci.h>
+#include <mach/common.h>
 #include <mach/serial.h>
-#include <linux/platform_data/mtd-davinci.h>
-#include <linux/platform_data/mmc-davinci.h>
-#include <linux/platform_data/usb-davinci.h>
 
 #include "davinci.h"
 
@@ -233,6 +234,11 @@ static struct spi_board_info dm355_leopard_spi_info[] __initconst = {
 static __init void dm355_leopard_init(void)
 {
 	struct clk *aemif;
+	int ret;
+
+	ret = dm355_gpio_register();
+	if (ret)
+		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
 
 	gpio_request(9, "dm9000");
 	gpio_direction_input(9);

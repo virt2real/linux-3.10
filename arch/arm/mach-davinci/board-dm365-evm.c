@@ -12,33 +12,33 @@
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-#include <linux/kernel.h>
-#include <linux/init.h>
+#include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/i2c.h>
-#include <linux/io.h>
-#include <linux/clk.h>
 #include <linux/i2c/at24.h>
+#include <linux/init.h>
+#include <linux/input.h>
+#include <linux/io.h>
+#include <linux/kernel.h>
 #include <linux/leds.h>
 #include <linux/mtd/mtd.h>
-#include <linux/mtd/partitions.h>
-#include <linux/slab.h>
 #include <linux/mtd/nand.h>
-#include <linux/input.h>
-#include <linux/spi/spi.h>
+#include <linux/mtd/partitions.h>
+#include <linux/platform_data/i2c-davinci.h>
+#include <linux/platform_data/keyscan-davinci.h>
+#include <linux/platform_data/mmc-davinci.h>
+#include <linux/platform_data/mtd-davinci.h>
+#include <linux/slab.h>
 #include <linux/spi/eeprom.h>
+#include <linux/spi/spi.h>
 #include <linux/v4l2-dv-timings.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
 
-#include <mach/mux.h>
 #include <mach/common.h>
-#include <linux/platform_data/i2c-davinci.h>
+#include <mach/mux.h>
 #include <mach/serial.h>
-#include <linux/platform_data/mmc-davinci.h>
-#include <linux/platform_data/mtd-davinci.h>
-#include <linux/platform_data/keyscan-davinci.h>
 
 #include <media/ths7303.h>
 #include <media/tvp514x.h>
@@ -743,6 +743,12 @@ static struct spi_board_info dm365_evm_spi_info[] __initconst = {
 
 static __init void dm365_evm_init(void)
 {
+	int ret;
+
+	ret = dm365_gpio_register();
+	if (ret)
+		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
+
 	evm_init_i2c();
 	davinci_serial_init(dm365_serial_device);
 

@@ -8,37 +8,42 @@
  * is licensed "as is" without any warranty of any kind, whether express
  * or implied.
  */
-#include <linux/kernel.h>
-#include <linux/init.h>
+#include <linux/clk.h>
 #include <linux/dma-mapping.h>
-#include <linux/platform_device.h>
+#include <linux/err.h>
 #include <linux/gpio.h>
 #include <linux/i2c.h>
-#include <linux/i2c/pcf857x.h>
 #include <linux/i2c/at24.h>
+#include <linux/i2c/pcf857x.h>
+#include <linux/init.h>
+#include <linux/input.h>
+#include <linux/io.h>
+#include <linux/kernel.h>
+#include <linux/leds.h>
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/physmap.h>
 #include <linux/phy.h>
-#include <linux/clk.h>
-#include <linux/videodev2.h>
+#include <linux/platform_data/i2c-davinci.h>
+#include <linux/platform_data/keyscan-davinci.h>
+#include <linux/platform_data/mmc-davinci.h>
+#include <linux/platform_data/mtd-davinci.h>
+#include <linux/platform_data/mtd-davinci-aemif.h>
+#include <linux/platform_data/usb-davinci.h>
+#include <linux/slab.h>
+#include <linux/spi/eeprom.h>
+#include <linux/spi/spi.h>
 #include <linux/v4l2-dv-timings.h>
-#include <linux/export.h>
-
-#include <media/tvp514x.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
 
 #include <mach/common.h>
-#include <linux/platform_data/i2c-davinci.h>
-#include <mach/serial.h>
 #include <mach/mux.h>
-#include <linux/platform_data/mtd-davinci.h>
-#include <linux/platform_data/mmc-davinci.h>
-#include <linux/platform_data/usb-davinci.h>
-#include <linux/platform_data/mtd-davinci-aemif.h>
+#include <mach/serial.h>
+
+#include <media/tvp514x.h>
 
 #include "davinci.h"
 
@@ -753,8 +758,13 @@ static int davinci_phy_fixup(struct phy_device *phydev)
 
 static __init void davinci_evm_init(void)
 {
+	int ret;
 	struct clk *aemif_clk;
 	struct davinci_soc_info *soc_info = &davinci_soc_info;
+
+	ret = dm644x_gpio_register();
+	if (ret)
+		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
 
 	aemif_clk = clk_get(NULL, "aemif");
 	clk_prepare_enable(aemif_clk);
