@@ -15,29 +15,31 @@
 #include <linux/delay.h>
 #include <linux/gpio.h>
 #include <linux/gpio_keys.h>
-#include <linux/init.h>
-#include <linux/kernel.h>
 #include <linux/i2c.h>
 #include <linux/i2c/at24.h>
 #include <linux/i2c/pca953x.h>
+#include <linux/init.h>
 #include <linux/input.h>
 #include <linux/input/tps6507x-ts.h>
+#include <linux/kernel.h>
 #include <linux/mfd/tps6507x.h>
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/physmap.h>
-#include <linux/platform_device.h>
+#include <linux/platform_data/gpio-davinci.h>
 #include <linux/platform_data/mtd-davinci.h>
 #include <linux/platform_data/mtd-davinci-aemif.h>
 #include <linux/platform_data/spi-davinci.h>
 #include <linux/platform_data/uio_pruss.h>
+#include <linux/platform_device.h>
 #include <linux/regulator/machine.h>
 #include <linux/regulator/tps6507x.h>
-#include <linux/spi/spi.h>
 #include <linux/spi/flash.h>
+#include <linux/spi/spi.h>
 #include <linux/wl12xx.h>
 
+#include <mach/common.h>
 #include <mach/cp_intc.h>
 #include <mach/da8xx.h>
 #include <mach/mux.h>
@@ -47,8 +49,8 @@
 #include <asm/mach/arch.h>
 #include <asm/system_info.h>
 
-#include <media/tvp514x.h>
 #include <media/adv7343.h>
+#include <media/tvp514x.h>
 
 #define DA850_EVM_PHY_ID		"davinci_mdio-0:00"
 #define DA850_LCD_PWR_PIN		GPIO_TO_PIN(2, 8)
@@ -1438,6 +1440,10 @@ static __init int da850_wl12xx_init(void)
 static __init void da850_evm_init(void)
 {
 	int ret;
+
+	ret = da850_register_gpio();
+	if (ret)
+		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
 
 	ret = pmic_tps65070_init();
 	if (ret)
