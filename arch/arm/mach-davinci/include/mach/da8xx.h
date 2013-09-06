@@ -11,25 +11,25 @@
 #ifndef __ASM_ARCH_DAVINCI_DA8XX_H
 #define __ASM_ARCH_DAVINCI_DA8XX_H
 
-#include <video/da8xx-fb.h>
-
-#include <linux/platform_device.h>
 #include <linux/davinci_emac.h>
-#include <linux/spi/spi.h>
 #include <linux/platform_data/davinci_asp.h>
-#include <linux/reboot.h>
-#include <linux/videodev2.h>
-
-#include <mach/serial.h>
-#include <mach/pm.h>
 #include <linux/platform_data/edma.h>
 #include <linux/platform_data/i2c-davinci.h>
 #include <linux/platform_data/mmc-davinci.h>
-#include <linux/platform_data/usb-davinci.h>
 #include <linux/platform_data/spi-davinci.h>
 #include <linux/platform_data/uio_pruss.h>
+#include <linux/platform_data/usb-davinci.h>
+#include <linux/platform_device.h>
+#include <linux/reboot.h>
+#include <linux/spi/spi.h>
+#include <linux/videodev2.h>
+
+#include <mach/pm.h>
+#include <mach/serial.h>
 
 #include <media/davinci/vpif_types.h>
+
+#include <video/da8xx-fb.h>
 
 extern void __iomem *da8xx_syscfg0_base;
 extern void __iomem *da8xx_syscfg1_base;
@@ -97,6 +97,7 @@ int da8xx_register_mmcsd0(struct davinci_mmc_config *config);
 int da850_register_mmcsd1(struct davinci_mmc_config *config);
 void da8xx_register_mcasp(int id, struct snd_platform_data *pdata);
 int da8xx_register_rtc(void);
+int da8xx_register_gpio(void *pdata);
 int da850_register_cpufreq(char *async_clk);
 int da8xx_register_cpuidle(void);
 void __iomem *da8xx_get_mem_ctlr(void);
@@ -110,6 +111,8 @@ int da850_register_vpif_capture
 void da8xx_restart(enum reboot_mode mode, const char *cmd);
 void da8xx_rproc_reserve_cma(void);
 int da8xx_register_rproc(void);
+int da850_register_gpio(void);
+int da830_register_gpio(void);
 
 extern struct platform_device da8xx_serial_device[];
 extern struct emac_platform_data da8xx_emac_pdata;
