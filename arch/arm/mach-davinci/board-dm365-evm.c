@@ -776,7 +776,7 @@ static __init void dm365_evm_init(void)
 			ARRAY_SIZE(dm365_evm_spi_info));
 }
 
-MACHINE_START(DAVINCI_DM365_V2R, "DaVinci DM365 V2R")
+MACHINE_START(DAVINCI_DM365_EVM, "DaVinci DM365 V2R")
 	.atag_offset	= 0x100,
 	.map_io		= dm365_evm_map_io,
 	.init_irq	= davinci_irq_init,
