@@ -88,7 +88,7 @@ static inline void __arch_decomp_setup(unsigned long arch_id)
 		DEBUG_LL_DAVINCI(dm355_leopard,		0);
 		DEBUG_LL_DAVINCI(davinci_dm6467_evm,	0);
 		DEBUG_LL_DAVINCI(davinci_dm365_evm,	0);
-
+		DEBUG_LL_DAVINCI(davinci_dm365_v2r,	0);
 		/* DA8xx boards */
 		DEBUG_LL_DA8XX(davinci_da830_evm,	2);
 		DEBUG_LL_DA8XX(davinci_da850_evm,	2);
